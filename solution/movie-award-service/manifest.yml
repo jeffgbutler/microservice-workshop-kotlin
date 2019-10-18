@@ -1,0 +1,6 @@
+applications:
+- name: movie-award-service
+  path: build/libs/movie-award-service-0.0.1-SNAPSHOT.jar
+  random-route: true
+  services:
+  - jgbregistry

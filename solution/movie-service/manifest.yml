@@ -1,0 +1,6 @@
+applications:
+- name: movie-service
+  path: build/libs/movie-service-0.0.1-SNAPSHOT.jar
+  random-route: true
+  services:
+  - jgbregistry
