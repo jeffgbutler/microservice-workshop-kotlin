@@ -21,11 +21,11 @@ management:
 
 eureka:
   client:
-    enabled: true
+    enabled: false
 
 feign:
   hystrix:
-    enabled: true
+    enabled: false
 
 # set the threshold low so we can see the circuit trip
 hystrix:

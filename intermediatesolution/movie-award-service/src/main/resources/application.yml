@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: movie-award-service
+
+info:
+  app:
+    name: Movie Award Service
+
+management:
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  client:
+    enabled: false
