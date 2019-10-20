@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>Microservice Resiliency</title>
+<meta charset="utf-8" >
+<link rel="stylesheet" href="reveal.js-3.7.0/css/reveal.css">
+<link rel="stylesheet" href="reveal.js-3.7.0/css/theme/moon.css">
+<link rel="stylesheet" href="reveal.js-3.7.0/lib/css/obsidian.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>Microservice Resiliency</h2>
+        <h3>Kotlin/Spring Edition</h3>
+        <h4>Jeff Butler</h4>
+        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-kotlin/</p>
+        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-kotlin/</p>
+      </section>
+
+      <section>
+        <h2>About Me</h2>
+        <ul>
+          <li>Platform Architect for Pivotal Software in Indianapolis</li>
+          <li>Committer to iBatis/MyBatis since 2005</li>
+          <li>Creator of MyBatis Generator and MyBatis Dynamic SQL</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Plan for the Workshop</h2>
+        <p>We will use Spring Boot for every example and exercise. Major topics include:</p>
+        <ul>
+          <li>Building Basic Web Services</li>
+          <li>Building Web Service Clients with Feign (or REST Template)</li>
+          <li>Using Eureka for Service Discovery</li>
+          <li>Using Hystrix for Circuit Breakers</li>
+          <li>Deployment on Pivotal Cloud Foundry</li>
+        </ul>
+        <p>Most of these tools are originally from Netflix OSS and have been integrated into Spring.</p>
+      </section>
+
+      <section>
+        <h2>Caveats</h2>
+        <ul>
+          <li>This workshop is focused on learning some fundamental tools and patterns</li>
+          <li>This workshop is not focused on architecture for your particular problem space.</li>
+          <li>Most of the things we learn will be only one of many different ways to accomplish a task.
+              I will mention alternatives along the way, but will only focus on a few techniques.</li>
+          <li>There will be coding!</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The Big Picture</h2>
+        <img src="images/Microservice_Workshop.png" alt="The Big Picture" height="500px" />
+      </section>
+
+      <section>
+        <h2>Next Steps</h2>
+        <ul>
+          <li>Overview of the source repo</li>
+          <li>Setup Exercise: Make sure you can run a web service in whatever IDE you choose</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="reveal.js-3.7.0/lib/js/head.min.js"></script>
+  <script src="reveal.js-3.7.0/js/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+        slideNumber: 'c/t',
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal.js-3.7.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+            // Syntax highlight for <code> elements
+            { src: 'reveal.js-3.7.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+            // Zoom in and out with Alt+click
+            { src: 'reveal.js-3.7.0/plugin/zoom-js/zoom.js', async: true },
+
+            // Speaker notes
+            { src: 'reveal.js-3.7.0/plugin/notes/notes.js', async: true }
+        ]
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<html>
+
+<head>
+  <title>Microservice Resiliency</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="reveal.js-3.7.0/css/reveal.css">
+  <link rel="stylesheet" href="reveal.js-3.7.0/css/theme/moon.css">
+  <link rel="stylesheet" href="reveal.js-3.7.0/lib/css/obsidian.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>Microservice Resiliency</h2>
+        <h3>Hystrix</h3>
+        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-java/</p>
+        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-java/</p>
+      </section>
+
+      <section>
+        <h2>What is Hystrix?</h2>
+        <ul style="font-size: smaller">
+          <li>Implementation of the Circuit Breaker pattern</li>
+          <li>Created by Netflix</li>
+          <li>Integrated into Spring with Spring Cloud Netflix</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The Elephant in the Room</h2>
+        <ul style="font-size: smaller">
+          <li>In December 2018, Netflix announced that Hystrix is entering maintenance mode</li>
+          <li>At the same time, Pivotal and Netflix announced recommended replacements</li>
+          <li>The new recommended circuit breaker implementation is
+            <a href="https://github.com/resilience4j/resilience4j">https://github.com/resilience4j/resilience4j</a>
+          </li>
+          <li>See <a href="https://spring.io/blog/2018/12/12/spring-cloud-greenwich-rc1-available-now">
+              https://spring.io/blog/2018/12/12/spring-cloud-greenwich-rc1-available-now</a> for details</li>
+          <li>Updates to this workshop coming soon! But the basic concepts remain the same.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>What is a Circuit Breaker?</h2>
+        <ul style="font-size: smaller">
+          <li>The circuit breaker is a wrapper over a command</li>
+          <li>The wrapper watches for failures and will call a fallback method if there is a failure</li>
+          <li>Once failures reach a certain threshold, the circuit will be "opened"</li>
+          <li>When a circuit is opened, only the fallback method will be called</li>
+          <li>The circuit breaker will periodically try the true method and if the failure rate falls
+            below the threshold, then the circuit will be "closed" and traffic will begin flowing to the true service</li>
+          <li>Closed == Good</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Configuring Hystrix and Feign</h2>
+        <ul style="font-size: smaller">
+          <li>Hystrix is available as a dependency in the Spring Initializr</li>
+          <li>Hystrix is integrated with Feign...
+            <ul>
+              <li>Add the <code>@EnableCircuitBreaker</code> annotation to a configuration class</li>
+              <li>Set the property <code>feign.hystrix.enabled=true</code></li>
+              <li>Add a <code>fallback</code> implementation class on the <code>@FeignClient</code> annotation</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The Hystrix Dashboard</h2>
+        <ul style="font-size: smaller">
+          <li>Hystrix will publish a stream of information about the state of the curcuits on the
+            <code>/actuator/hystrix.stream</code> endpoint</li>
+          <li>This data stream is hard for a human to consume!</li>
+          <li>The Hystrix dashboard will consume the stream and present a friendly UI</li>
+          <li>Netflix has stated that the Hystrix dashboard has some security vulnerabilites and should not be
+            exposed publicly
+          </li>
+          <li>PCF implements a circuit breaker dashboard in the Spring Cloud Services tile</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Exercise</h2>
+        <ul style="font-size: smaller">
+          <li>Create fallback implementations for the feign clients</li>
+          <li>Enable Hystrix</li>
+          <li>Setup a Hystrix dashboard</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="reveal.js-3.7.0/lib/js/head.min.js"></script>
+  <script src="reveal.js-3.7.0/js/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      slideNumber: 'c/t',
+      dependencies: [
+        // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+        { src: 'reveal.js-3.7.0/lib/js/classList.js', condition: function () { return !document.body.classList; } },
+
+        // Syntax highlight for <code> elements
+        { src: 'reveal.js-3.7.0/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+
+        // Zoom in and out with Alt+click
+        { src: 'reveal.js-3.7.0/plugin/zoom-js/zoom.js', async: true },
+
+        // Speaker notes
+        { src: 'reveal.js-3.7.0/plugin/notes/notes.js', async: true }
+      ]
+    });
+  </script>
+</body>
+
+</html>

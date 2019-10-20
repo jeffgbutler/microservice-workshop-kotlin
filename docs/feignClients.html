@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>Microservice Resiliency</title>
+<meta charset="utf-8" >
+<link rel="stylesheet" href="reveal.js-3.7.0/css/reveal.css">
+<link rel="stylesheet" href="reveal.js-3.7.0/css/theme/moon.css">
+<link rel="stylesheet" href="reveal.js-3.7.0/lib/css/obsidian.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>Microservice Resiliency</h2>
+        <h3>Feign Clients</h3>
+        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-java/</p>
+        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-java/</p>
+      </section>
+
+      <section>
+        <h2>What is Feign?</h2>
+        <ul style="font-size: smaller">
+          <li>Feign is a declarative REST client</li>
+          <li>Originated at Netflix, now in a separate orgainzation (Open Feign)</li>
+          <li>It is a method of calling a remote web service by defining the request and response only</li>
+          <li>Feign handles all the marshalling/error handling/etc. for calling a remote service</li>
+          <li>Spring Cloud Feign integrates Feign with the Spring web service annotations</li>
+          <li>Fully integrated with Eureka and Hystrix</li>
+          <li>Meant to be a replacement for Spring REST Template</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Adding Feign to Spring Boot</h2>
+        <ul style="font-size: smaller">
+          <li>Available in Spring Initializr as a standard dependency</li>
+          <li>Globally enabled with the <code>@EnableFeignClients</code> annotation on a configuration class</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Example Feign Client</h2>
+        <pre>
+          <code data-trim class="java">
+              @FeignClient(name="movie-award-service", url="http://localhost:8080")
+              public interface MovieAwardService {
+              
+                  @GetMapping("/award/search")
+                  List&lt;MovieAward&gt; findAwardsForMovie(@RequestParam("movieId") Integer movieId);
+              }
+          </code>
+        </pre>
+        <p style="font-size: smaller">This will call a web service with a URL like <code>http://localhost:8080/award/search?movieId=3</code></p>
+        <p style="font-size: smaller">Returned JSON will be automatically unmarshalled to the class you define</p>
+      </section>
+      
+      <section>
+        <h2>Handling 404</h2>
+        <pre>
+          <code data-trim class="java">
+              @FeignClient(name="movie-service", decode404=true, url="http://localhost:8080")
+              public interface MovieService {
+                
+                  @GetMapping("/movie/{id}")
+                  Optional&lt;Movie&gt; findById(@PathVariable("id") Integer id);
+              }
+          </code>
+        </pre>
+        <p style="font-size: smaller">With <code>decode404=true</code> the code will return an empty 
+          Optional if there is a 404 (NOT_FOUND) error</p>
+      </section>
+
+      <section>
+        <h2>Application Integration</h2>
+        <ul style="font-size: smaller">
+          <li>Interfaces annotated with <code>@FeignClient</code> are automatically discovered and available in the Spring
+            container</li>
+          <li>If you wish to share service and model definitions between a client and server:
+            <ul style="font-size: smaller">
+              <li>Create a common interface with just the mappings and path or request valiables</li>
+              <li>In the server, extend the common interface and add <code>@RestController</code></li>
+              <li>In the client, extend the common interface and add <code>@FeignClient</code></li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Exercise</h2>
+        <p style="font-size: smaller">Create Feign clients in the aggregate web service</p>
+      </section>
+    </div>
+  </div>
+
+  <script src="reveal.js-3.7.0/lib/js/head.min.js"></script>
+  <script src="reveal.js-3.7.0/js/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+        slideNumber: 'c/t',
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal.js-3.7.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+            // Syntax highlight for <code> elements
+            { src: 'reveal.js-3.7.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+            // Zoom in and out with Alt+click
+            { src: 'reveal.js-3.7.0/plugin/zoom-js/zoom.js', async: true },
+
+            // Speaker notes
+            { src: 'reveal.js-3.7.0/plugin/notes/notes.js', async: true }
+        ]
+    });
+  </script>
+</body>
+</html>

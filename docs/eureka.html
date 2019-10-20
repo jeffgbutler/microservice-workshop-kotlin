@@ -1,0 +1,115 @@
+<html>
+
+<head>
+  <title>Microservice Resiliency</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="reveal.js-3.7.0/css/reveal.css">
+  <link rel="stylesheet" href="reveal.js-3.7.0/css/theme/moon.css">
+  <link rel="stylesheet" href="reveal.js-3.7.0/lib/css/obsidian.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>Microservice Resiliency</h2>
+        <h3>Eureka</h3>
+        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-java/</p>
+        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-java/</p>
+      </section>
+
+      <section>
+        <h2>What is Eureka?</h2>
+        <ul style="font-size: smaller">
+          <li>Eureka is a service discovery system</li>
+          <li>Eureka originated at Netflix</li>
+          <li>Spring Cloud Netflix has integrated Eureka into Spring</li>
+          <li>Web services register themselves with a Eureka Server</li>
+          <li>Web service clients look up service addresses from the Eureka server</li>
+          <li>This solves the problem of hard-coded URLs in the Feign clients</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Configuring a Eureka Server</h2>
+        <ul style="font-size: smaller">
+          <li>"Eureka Server" is a dependency in the Spring Initializr</li>
+          <li>Build a new project with only the "Eureka Server" dependency</li>
+          <li>Add <code>@EnableEurekaServer</code> to the main Spring Boot class</li>
+          <li>That's, basically, it</li>
+          <li>Eureka server is also built into Pivotal Cloud Foundry with the Spring Cloud Services tile</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Configuring Eureka Clients</h2>
+        <ul style="font-size: smaller">
+          <li>"Eureka Discovery" is the dependency in the Spring Initializr</li>
+          <li>Web services are automatically registered with a Eureka server</li>
+          <li>Feign clients will lookup endpoints from Eureka if we simply remove the <code>url</code> attribute of
+            <code>@FeignClient</code></li>
+          <li>That's, basically, it</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Service Names and Granularity</h2>
+        <ul style="font-size: smaller">
+          <li>The name of the service is taken from the <code>spring.application.name</code> property. This property
+            is specified in <code>bootstrap.yml</code> by convention
+          </li>
+          <li>The <code>name</code> attribute of a <code>@FeignClient</code> annotation specifies which service to lookup</li>
+          <li>This is a lookup for a base URL for all services in an application - it is not a granular service catalog</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>What is Ribbon?</h2>
+        <ul style="font-size: smaller">
+          <li>Ribbon, another Netflix project, is a client side load balancer</li>
+          <li>Ribbon is a transitive dependency of Eureka Discovery (it comes along for free)</li>
+          <li>Multiple service instances can register themselves in Eureka with the same name</li>
+          <li>When there are multiple service instances, Ribbon will load balance between them</li>
+          <li>If you have another load balancing strategy (like PCF scaling),
+            then you can disable Ribbon on the clients
+          </li>
+          <li>Ribbon is in maintenance mode currently and will be replaced by Spring Cloud Loadbalancer.
+             This should be transparent to most users</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Exercise</h2>
+        <ul style="font-size: smaller">
+          <li>Create a Eureka Server</li>
+          <li>Alter the services so they will register with the Eureka server</li>
+          <li>Alter the aggregator service so it will lookup endpoints from the Eureka server</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="reveal.js-3.7.0/lib/js/head.min.js"></script>
+  <script src="reveal.js-3.7.0/js/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      slideNumber: 'c/t',
+      dependencies: [
+        // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+        { src: 'reveal.js-3.7.0/lib/js/classList.js', condition: function () { return !document.body.classList; } },
+
+        // Syntax highlight for <code> elements
+        { src: 'reveal.js-3.7.0/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+
+        // Zoom in and out with Alt+click
+        { src: 'reveal.js-3.7.0/plugin/zoom-js/zoom.js', async: true },
+
+        // Speaker notes
+        { src: 'reveal.js-3.7.0/plugin/notes/notes.js', async: true }
+      ]
+    });
+  </script>
+</body>
+
+</html>
