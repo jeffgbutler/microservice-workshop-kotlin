@@ -1,6 +1,6 @@
-# Movie Aggregator Service
+# Movie Aggregator Service (Rest Template Based)
 
-This is the final solution for the aggregate movie service based on OpenFeign. This implementation looks up services through Eureka and uses Hystrix circuit breakers.
+This is the final solution for the aggregate movie service based on Spring Rest Template. This implementation looks up services through Eureka and uses Hystrix circuit breakers.
 
 ## Spring Initializer Information
 This app was bootstrapped through the Spring initializer (https://start.spring.io)
@@ -16,5 +16,4 @@ The following options were selected:
    - Service Registry (PCF)
    - Hystrix
    - Spring Security
-   - OpenFeign
    

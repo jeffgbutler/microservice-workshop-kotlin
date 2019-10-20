@@ -1,7 +1,6 @@
 # Movie Aggregator Service
 
-This is the final solution for the aggregate movie service. This implementation looks up services through Eureka and uses
-Hystrix circuit breakers.
+This is the final solution for the aggregate movie service based on OpenFeign. This implementation looks up services through Eureka and uses Hystrix circuit breakers.
 
 ## Spring Initializer Information
 This app was bootstrapped through the Spring initializer (https://start.spring.io)
