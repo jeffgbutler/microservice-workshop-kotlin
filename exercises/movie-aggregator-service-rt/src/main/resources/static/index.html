@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Movie Service Traffic Simulator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <h1>Movie Service Traffic Simulator</h1>
+      <div id="app">
+        <div>
+          <button class="btn btn-primary" @click="start" v-bind:disabled="started">Start</button>
+          <button class="btn btn-primary" @click="stop" v-bind:disabled="!started">Stop</button>
+          <button class="btn btn-primary" @click="clear">Clear History</button>
+          <a class="btn btn-info" href="swagger-ui.html">Swagger</a>
+        </div>
+
+        <div v-if="hasMovies">
+          <h2>Movies</h2>
+          <table class="table table-striped">
+            <thead class="thead-light">
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Release Date</th>
+                <th>Run Length</th>
+                <th>Cast Members</th>
+                <th>Awards</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="movie in movies">
+                <td valign="top">{{ movie.id }}</td>
+                <td valign="top">{{ movie.title }}</td>
+                <td valign="top">{{ movie.releaseDate }}</td>
+                <td valign="top">{{ movie.runLength }}</td>
+                <td valign="top">
+                  <div v-for="castMember in movie.castMembers">
+                    {{ castMember.role }} : {{ castMember.actor }}
+                  </div>
+                </td>
+                <td valign="top">
+                  <div v-for="award in movie.awards">
+                    {{ award.year }} : {{ award.award }}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div v-if="hasErrors">
+          <h2>Errors</h2>
+          <table class="table table-striped">
+            <thead class="thead-light">
+              <tr>
+                <th>Timestamp</th>
+                <th>Error Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="error in errors">
+                <td valign="top">{{ error.timestamp }}</td>
+                <td valign="top">{{ error.message }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

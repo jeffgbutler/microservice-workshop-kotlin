@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: movie-aggregator-service-rt
+
+info:
+  app:
+    name: Movie Aggregator Service (RT)
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: info,health,hystrix.stream
+
+eureka:
+  client:
+    enabled: false
+
+# set the threshold low so we can see the circuit trip
+hystrix:
+  command:
+    default:
+      circuitBreaker:
+        requestVolumeThreshold: 2

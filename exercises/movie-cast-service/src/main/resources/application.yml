@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: movie-cast-service
+
+info:
+  app:
+    name: Movie Cast Service
+
+management:
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  client:
+    enabled: false
