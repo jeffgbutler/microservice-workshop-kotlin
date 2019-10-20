@@ -1,0 +1,6 @@
+applications:
+- name: movie-aggregator-service-rt
+  path: build/libs/movie-aggregator-service-rt-0.0.1-SNAPSHOT.jar
+  random-route: true
+  services:
+  - jgbregistry
