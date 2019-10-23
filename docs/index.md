@@ -15,3 +15,4 @@
 1. [Open Feign Exercise](feignClientExercise.md)
 1. [Eureka Exercise](eurekaExercise.md)
 1. [Hystrix Exercise](hystrixExercise.md)
+1. [Cloud Foundry Exercise](cloudFoundryExercise.md)
