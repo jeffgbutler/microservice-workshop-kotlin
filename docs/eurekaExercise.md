@@ -65,11 +65,11 @@ Then for each of the three individual services:
 
    ```kotlin
         val url = discoveryClient.getInstances("movie-award-service")
-                .stream()
-                .findAny()
-                .map { it.uri.toString() }
-                .orElseThrow{IllegalStateException("movie-award-service not available")}
+                .firstOrNull()?.uri.toString()
+                ?: throw IllegalStateException("movie-award-service not available")
    ```
+
+   **Important Note:**: you can find the proper service name by looking at the `spring.application.name` property in the `application.yml` file of each of the three remote services. That property sets the name of the application in the Eureka server.
 
 1. Start the `movie-aggregator-service-rt` application. If you open the Eureka console, you will see that the aggregator service has also registered itself with eureka.
 1. Start the traffic simulator and make sure that information is still being returned correctly from the aggregate service.

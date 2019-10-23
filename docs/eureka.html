@@ -62,11 +62,9 @@
             
                 fun findCastMembers(movieId: Int): List&lt;CastMember&gt; {
                     val url = discoveryClient.getInstances("movie-cast-service")
-                            .stream()
-                            .findAny()
-                            .map { it.uri.toString() }
-                            .orElseThrow{ IllegalStateException("movie-cast-service not available") }
-            
+                            .firstOrNull()?.uri.toString()
+                            ?: throw IllegalStateException("movie-cast-service not available")
+              
                     val uri = UriComponentsBuilder.fromHttpUrl(url)
                             .pathSegment("cast")
                             .pathSegment("search")

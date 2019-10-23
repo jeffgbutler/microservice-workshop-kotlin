@@ -8,7 +8,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
-import java.lang.IllegalStateException
 
 @Service
 class MovieAwardService(private val template: RestTemplate, private val discoveryClient: DiscoveryClient) {
@@ -16,10 +15,8 @@ class MovieAwardService(private val template: RestTemplate, private val discover
     @HystrixCommand(fallbackMethod = "defaultAwards")
     fun findAwardsForMovie(movieId: Int): List<MovieAward> {
         val url = discoveryClient.getInstances("movie-award-service")
-                .stream()
-                .findAny()
-                .map { it.uri.toString() }
-                .orElseThrow{IllegalStateException("movie-award-service not available")}
+                .firstOrNull()?.uri.toString()
+                ?: throw IllegalStateException("movie-award-service not available")
 
         val uri = UriComponentsBuilder.fromHttpUrl(url)
                 .pathSegment("award")
