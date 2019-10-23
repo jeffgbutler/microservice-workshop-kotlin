@@ -4,6 +4,19 @@ The goal of this exercise is to create REST Template based clients for the three
 
 All work for this exercise will be in the `movie-aggregator-service-rt` project.
 
+## Application Change
+Make the following change to the class `MovieAggregatorServiceRtApplication` in the `microservice.workshop.movieaggregatorservicert` package:
+
+Add a method that will create a REST template like this:
+
+```kotlin
+@SpringBootApplication
+class MovieAggregatorServiceRtApplication {
+	@Bean
+	fun restTemplate(builder: RestTemplateBuilder): RestTemplate = builder.build()
+}
+```
+
 ## Movie Award Client
 
 1. Create a new class called `MovieAwardService` in the `microservice.workshop.movieaggregatorservicert.service` package
@@ -45,7 +58,7 @@ Test the application in the following way:
 
 ## Use the Traffic Simulator
 
-Start the movie-aggregator-service application and access it's swagger interface at [http://localhost:8080](http://localhost:8080)
+Start the movie-aggregator-service-rt application and access it's swagger interface at [http://localhost:8080](http://localhost:8080)
 
 The aggregate service includes a simple SPA (single page application), written with Vue.js, that will send random requests to the aggregate service. This will be very useful when we start to work with Hystrix. You can try it now by navigating to the root of the aggregator project at [http://localhost:8080](http://localhost:8080). Once the page is open in a browser, press the "Start" button to start sending traffic to your new aggregate web service.
 
