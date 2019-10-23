@@ -14,7 +14,7 @@ class MovieService(private val template: RestTemplate, private val discoveryClie
     @HystrixCommand(fallbackMethod = "unknownMovie")
     fun findById(id: Int): Movie? {
         val url = discoveryClient.getInstances("movie-service")
-                .firstOrNull()?.uri.toString()
+                .firstOrNull()?.uri?.toString()
                 ?: throw IllegalStateException("movie-service not available")
 
         val uri = UriComponentsBuilder.fromHttpUrl(url)

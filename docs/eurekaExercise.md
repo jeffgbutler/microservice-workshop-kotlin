@@ -65,7 +65,7 @@ Then for each of the three individual services:
 
    ```kotlin
         val url = discoveryClient.getInstances("movie-award-service")
-                .firstOrNull()?.uri.toString()
+                .firstOrNull()?.uri?.toString()
                 ?: throw IllegalStateException("movie-award-service not available")
    ```
 

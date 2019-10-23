@@ -15,7 +15,7 @@ class MovieCastService(private val template: RestTemplate, private val discovery
     @HystrixCommand(fallbackMethod = "defaultCastMembers")
     fun findCastMembers(movieId: Int): List<CastMember> {
         val url = discoveryClient.getInstances("movie-cast-service")
-                .firstOrNull()?.uri.toString()
+                .firstOrNull()?.uri?.toString()
                 ?: throw IllegalStateException("movie-cast-service not available")
 
         val uri = UriComponentsBuilder.fromHttpUrl(url)

@@ -15,7 +15,7 @@ class MovieAwardService(private val template: RestTemplate, private val discover
     @HystrixCommand(fallbackMethod = "defaultAwards")
     fun findAwardsForMovie(movieId: Int): List<MovieAward> {
         val url = discoveryClient.getInstances("movie-award-service")
-                .firstOrNull()?.uri.toString()
+                .firstOrNull()?.uri?.toString()
                 ?: throw IllegalStateException("movie-award-service not available")
 
         val uri = UriComponentsBuilder.fromHttpUrl(url)
