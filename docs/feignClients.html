@@ -13,8 +13,8 @@
       <section>
         <h2>Microservice Resiliency</h2>
         <h3>Feign Clients</h3>
-        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-java/</p>
-        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-java/</p>
+        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-kotlin/</p>
+        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-kotlin/</p>
       </section>
 
       <section>
@@ -26,7 +26,7 @@
           <li>Feign handles all the marshalling/error handling/etc. for calling a remote service</li>
           <li>Spring Cloud Feign integrates Feign with the Spring web service annotations</li>
           <li>Fully integrated with Eureka and Hystrix</li>
-          <li>Meant to be a replacement for Spring REST Template</li>
+          <li>Meant to be a sinpler alternative for Spring REST Template</li>
         </ul>
       </section>
 
@@ -41,13 +41,13 @@
       <section>
         <h2>Example Feign Client</h2>
         <pre>
-          <code data-trim class="java">
-              @FeignClient(name="movie-award-service", url="http://localhost:8080")
-              public interface MovieAwardService {
-              
-                  @GetMapping("/award/search")
-                  List&lt;MovieAward&gt; findAwardsForMovie(@RequestParam("movieId") Integer movieId);
-              }
+          <code data-trim class="kotlin">
+            @FeignClient(name = "movie-award-service", url = "http://localhost:8083")
+            interface MovieAwardService {
+            
+                @GetMapping("/award/search")
+                fun findAwardsForMovie(@RequestParam("movieId") movieId: Int): List<MovieAward>
+            }
           </code>
         </pre>
         <p style="font-size: smaller">This will call a web service with a URL like <code>http://localhost:8080/award/search?movieId=3</code></p>
@@ -57,17 +57,17 @@
       <section>
         <h2>Handling 404</h2>
         <pre>
-          <code data-trim class="java">
-              @FeignClient(name="movie-service", decode404=true, url="http://localhost:8080")
-              public interface MovieService {
-                
-                  @GetMapping("/movie/{id}")
-                  Optional&lt;Movie&gt; findById(@PathVariable("id") Integer id);
-              }
+          <code data-trim class="kotlin">
+            @FeignClient(name = "movie-service", decode404 = true, url = "http://localhost:8081")
+            interface MovieService {
+            
+                @GetMapping("/movie/{id}")
+                fun findById(@PathVariable("id") id: Int): Movie?
+            }
           </code>
         </pre>
-        <p style="font-size: smaller">With <code>decode404=true</code> the code will return an empty 
-          Optional if there is a 404 (NOT_FOUND) error</p>
+        <p style="font-size: smaller">With <code>decode404=true</code> the code will return null
+          if there is a 404 (NOT_FOUND) error</p>
       </section>
 
       <section>

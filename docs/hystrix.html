@@ -14,8 +14,8 @@
       <section>
         <h2>Microservice Resiliency</h2>
         <h3>Hystrix</h3>
-        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-java/</p>
-        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-java/</p>
+        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-kotlin/</p>
+        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-kotlin/</p>
       </section>
 
       <section>
@@ -69,6 +69,16 @@
       </section>
 
       <section>
+        <h2>Configuring Hystrix and REST Template</h2>
+        <ul style="font-size: smaller">
+          <li>Hystrix is available as a dependency in the Spring Initializr</li>
+          <li>Use <code>@HystrixCommand</code> to annotate a method and specify a fallback method</li>
+          <li>Add the <code>@EnableCircuitBreaker</code> annotation to a configuration class</li>
+          </li>
+        </ul>
+      </section>
+
+      <section>
         <h2>The Hystrix Dashboard</h2>
         <ul style="font-size: smaller">
           <li>Hystrix will publish a stream of information about the state of the curcuits on the
@@ -78,14 +88,15 @@
           <li>Netflix has stated that the Hystrix dashboard has some security vulnerabilites and should not be
             exposed publicly
           </li>
-          <li>PCF implements a circuit breaker dashboard in the Spring Cloud Services tile</li>
+          <li>PCF implements a circuit breaker dashboard in the Spring Cloud Services tile (2.x only
+             - it is removed in 3.x in favor of micrometer/prometheus)</li>
         </ul>
       </section>
 
       <section>
         <h2>Exercise</h2>
         <ul style="font-size: smaller">
-          <li>Create fallback implementations for the feign clients</li>
+          <li>Create fallback implementations for the clients</li>
           <li>Enable Hystrix</li>
           <li>Setup a Hystrix dashboard</li>
         </ul>

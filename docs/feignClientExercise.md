@@ -26,7 +26,7 @@ All work for this exercise will be in the `movie-aggregator-service` project.
 1. Enable this interface to be a Feign client for the existing movie web service with the following characteristics:
     - use the name `movie-service` for the Feign client.
     - use the URL `http://localhost:8081`
-    - write a method that will return a `Optional<Movie>` for a given movie id
+    - write a method that will return `Movie?` for a given movie id
 
 ## Movie Aggregate Service
 
@@ -41,12 +41,13 @@ In the class `microservice.workshop.movieaggregatorservice.MovieAggregatorServic
 
 Test the application in the following way:
 
-1. Start all three of the individual web services by running the three application classes in each project, or by using the spring-boot:run maven goal on each project
-1. Once all three application are running, you should be able to run the test `microservice.workshop.movieaggregatorservice.test.AggregateMovieControllerTest` in the `movie-aggregator-service` project successfully
-1. Start the movie-aggregator-service application and access it's swagger interface at [http://localhost:8080](http://localhost:8080)
+1. Start all three of the individual web services by running the three application classes in each project, or by using the bootRun gradle goal on each project (or better yet, use the SpringBoot support in IntelliJ to start application through the services window)
+1. Once all three applications are running, you should be able to run the test `microservice.workshop.movieaggregatorservice.test.AggregateMovieControllerTest` in the `movie-aggregator-service` project successfully
 
 ## Use the Traffic Simulator
 
-This cloned repo has a simple SPA (single page application), written with Vue.js, that will send random requests to the aggregate service. This will be very useful when we start to work with Hystrix. You can try it now by opening `index.html` in the `/traffic-simulator` directory of the git repo. Once the page is open in a browser, press the "Start" button to start sending traffic to your new aggregate web service.
+Start the movie-aggregator-service application and access it's swagger interface at [http://localhost:8080](http://localhost:8080)
+
+The aggregate service includes a simple SPA (single page application), written with Vue.js, that will send random requests to the aggregate service. This will be very useful when we start to work with Hystrix. You can try it now by navigating to the root of the aggregator project at [http://localhost:8080](http://localhost:8080). Once the page is open in a browser, press the "Start" button to start sending traffic to your new aggregate web service.
 
 Once you are satifsfied that everything is working properly, end all four running web services.

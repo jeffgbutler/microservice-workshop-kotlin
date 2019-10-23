@@ -14,8 +14,8 @@
       <section>
         <h2>Microservice Resiliency</h2>
         <h3>Eureka</h3>
-        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-java/</p>
-        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-java/</p>
+        <p style="font-size: smaller">https://github.com/jeffgbutler/microservice-workshop-kotlin/</p>
+        <p style="font-size: smaller">https://jeffgbutler.github.io/microservice-workshop-kotlin/</p>
       </section>
 
       <section>
@@ -26,7 +26,7 @@
           <li>Spring Cloud Netflix has integrated Eureka into Spring</li>
           <li>Web services register themselves with a Eureka Server</li>
           <li>Web service clients look up service addresses from the Eureka server</li>
-          <li>This solves the problem of hard-coded URLs in the Feign clients</li>
+          <li>This solves the problem of hard-coded URLs in the clients</li>
         </ul>
       </section>
 
@@ -48,8 +48,37 @@
           <li>Web services are automatically registered with a Eureka server</li>
           <li>Feign clients will lookup endpoints from Eureka if we simply remove the <code>url</code> attribute of
             <code>@FeignClient</code></li>
+          <li>REST Template clients will lookup endpoints from Eureka through a <code>>DiscoveryClient</code></li>
           <li>That's, basically, it</li>
         </ul>
+      </section>
+
+      <section>
+        <h2>Use of Discovery Client with REST Template</h2>
+        <pre>
+          <code data-trim class="kotlin" style="font-size: smaller;">
+            @Service
+            class MovieCastService(private val template: RestTemplate, private val discoveryClient: DiscoveryClient) {
+            
+                fun findCastMembers(movieId: Int): List&lt;CastMember&gt; {
+                    val url = discoveryClient.getInstances("movie-cast-service")
+                            .stream()
+                            .findAny()
+                            .map { it.uri.toString() }
+                            .orElseThrow{ IllegalStateException("movie-cast-service not available") }
+            
+                    val uri = UriComponentsBuilder.fromHttpUrl(url)
+                            .pathSegment("cast")
+                            .pathSegment("search")
+                            .queryParam("movieId", movieId)
+                            .toUriString()
+            
+                    val ent = template.exchange(uri, HttpMethod.GET, null, object : ParameterizedTypeReference&lt;List&lt;CastMember&gt;&gt;() {})
+                    return ent.body ?: emptyList()
+                }
+            }
+          </code>
+        </pre>
       </section>
 
       <section>
