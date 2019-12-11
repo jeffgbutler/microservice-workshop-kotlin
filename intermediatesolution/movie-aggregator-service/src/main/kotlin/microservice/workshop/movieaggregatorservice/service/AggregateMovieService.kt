@@ -1,6 +1,5 @@
 package microservice.workshop.movieaggregatorservice.service
 
-import microservice.workshop.movieaggregatorservice.model.Movie
 import org.springframework.stereotype.Service
 
 @Service
@@ -8,10 +7,7 @@ class AggregateMovieService(private val movieService: MovieService, private val 
                             private val castService: MovieCastService) {
 
     fun findById(id: Int) =
-            movieService.findById(id)?.augmentMovie()
-
-    private fun Movie.augmentMovie() =
-            apply {
+            movieService.findById(id)?.apply {
                 addAwards(awardService.findAwardsForMovie(id))
                 addCastMembers(castService.findCastMembers(id))
             }
