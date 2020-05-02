@@ -13,15 +13,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: info,health,hystrix.stream
+        include: info,health
 
 eureka:
   client:
     enabled: true
-
-# set the threshold low so we can see the circuit trip
-hystrix:
-  command:
-    default:
-      circuitBreaker:
-        requestVolumeThreshold: 2

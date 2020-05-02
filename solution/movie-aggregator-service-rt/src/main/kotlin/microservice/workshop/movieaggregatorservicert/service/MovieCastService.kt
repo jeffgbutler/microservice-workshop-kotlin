@@ -1,7 +1,7 @@
 package microservice.workshop.movieaggregatorservicert.service
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand
 import microservice.workshop.movieaggregatorservicert.model.CastMember
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory
 import org.springframework.cloud.client.discovery.DiscoveryClient
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
@@ -10,10 +10,20 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
 @Service
-class MovieCastService(private val template: RestTemplate, private val discoveryClient: DiscoveryClient) {
+class MovieCastService(
+    private val template: RestTemplate,
+    private val discoveryClient: DiscoveryClient,
+    private val cbFactory: CircuitBreakerFactory<*, *>
+) {
 
-    @HystrixCommand(fallbackMethod = "defaultCastMembers")
     fun findCastMembers(movieId: Int): List<CastMember> {
+        return cbFactory.create("movie-cast-service-cb").run(
+            { getRemoteCastMembers(movieId) },
+            this::defaultCastMembers
+        )
+    }
+
+    private fun getRemoteCastMembers(movieId: Int): List<CastMember> {
         val url = discoveryClient.getInstances("movie-cast-service")
                 .firstOrNull()?.uri?.toString()
                 ?: throw IllegalStateException("movie-cast-service not available")
@@ -28,5 +38,5 @@ class MovieCastService(private val template: RestTemplate, private val discovery
         return ent.body ?: emptyList()
     }
 
-    private fun defaultCastMembers(movieId: Int) = emptyList<CastMember>()
+    private fun defaultCastMembers(t: Throwable) = emptyList<CastMember>()
 }

@@ -27,7 +27,7 @@ dependencies {
 	implementation("io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix")
+	implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
 
 	implementation("io.springfox:springfox-swagger2:2.9.2")
 	implementation("io.springfox:springfox-swagger-ui:2.9.2")

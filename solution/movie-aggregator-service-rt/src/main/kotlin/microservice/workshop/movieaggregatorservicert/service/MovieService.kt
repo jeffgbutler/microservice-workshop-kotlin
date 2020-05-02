@@ -1,7 +1,7 @@
 package microservice.workshop.movieaggregatorservicert.service
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand
 import microservice.workshop.movieaggregatorservicert.model.Movie
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory
 import org.springframework.cloud.client.discovery.DiscoveryClient
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
@@ -9,10 +9,20 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
 @Service
-class MovieService(private val template: RestTemplate, private val discoveryClient: DiscoveryClient) {
+class MovieService(
+    private val template: RestTemplate,
+    private val discoveryClient: DiscoveryClient,
+    private val cbFactory: CircuitBreakerFactory<*, *>
+) {
 
-    @HystrixCommand(fallbackMethod = "unknownMovie")
     fun findById(id: Int): Movie? {
+        return cbFactory.create("movie-service-cb").run(
+            { getRemoteMovie(id) },
+            this::unknownMovie
+        )
+    }
+
+    private fun getRemoteMovie(id: Int): Movie? {
         val url = discoveryClient.getInstances("movie-service")
                 .firstOrNull()?.uri?.toString()
                 ?: throw IllegalStateException("movie-service not available")
@@ -29,5 +39,5 @@ class MovieService(private val template: RestTemplate, private val discoveryClie
         }
     }
 
-    private fun unknownMovie(id: Int): Movie? = null
+    private fun unknownMovie(t: Throwable): Movie? = null
 }

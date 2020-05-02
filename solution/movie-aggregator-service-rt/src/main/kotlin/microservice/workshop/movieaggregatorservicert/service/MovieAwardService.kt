@@ -1,7 +1,7 @@
 package microservice.workshop.movieaggregatorservicert.service
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand
 import microservice.workshop.movieaggregatorservicert.model.MovieAward
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory
 import org.springframework.cloud.client.discovery.DiscoveryClient
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
@@ -10,10 +10,20 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 
 @Service
-class MovieAwardService(private val template: RestTemplate, private val discoveryClient: DiscoveryClient) {
+class MovieAwardService(
+    private val template: RestTemplate,
+    private val discoveryClient: DiscoveryClient,
+    private val cbFactory: CircuitBreakerFactory<*, *>
+) {
 
-    @HystrixCommand(fallbackMethod = "defaultAwards")
     fun findAwardsForMovie(movieId: Int): List<MovieAward> {
+        return cbFactory.create("movie-award-service-cb").run(
+            { getRemoteAwards(movieId) },
+            this::defaultAwards
+        )
+    }
+
+    private fun getRemoteAwards(movieId: Int): List<MovieAward> {
         val url = discoveryClient.getInstances("movie-award-service")
                 .firstOrNull()?.uri?.toString()
                 ?: throw IllegalStateException("movie-award-service not available")
@@ -28,5 +38,5 @@ class MovieAwardService(private val template: RestTemplate, private val discover
         return ent.body ?: emptyList()
     }
 
-    private fun defaultAwards(movieId: Int) = emptyList<MovieAward>()
+    private fun defaultAwards(t: Throwable) = emptyList<MovieAward>()
 }
