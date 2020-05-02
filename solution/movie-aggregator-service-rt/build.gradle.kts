@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.2.0.RELEASE"
-	id("io.spring.dependency-management") version "1.0.8.RELEASE"
-	kotlin("jvm") version "1.3.50"
-	kotlin("plugin.spring") version "1.3.50"
+	id("org.springframework.boot") version "2.2.6.RELEASE"
+	id("io.spring.dependency-management") version "1.0.9.RELEASE"
+	kotlin("jvm") version "1.3.71"
+	kotlin("plugin.spring") version "1.3.71"
 }
 
 group = "microservice.workshop"
@@ -16,8 +16,8 @@ repositories {
 	maven { url = uri("https://repo.spring.io/milestone") }
 }
 
-extra["springCloudServicesVersion"] = "2.1.4.RELEASE"
-extra["springCloudVersion"] = "Hoxton.M3"
+extra["springCloudServicesVersion"] = "2.2.3.RELEASE"
+extra["springCloudVersion"] = "Hoxton.SR4"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
