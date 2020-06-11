@@ -14,24 +14,24 @@ import java.time.Duration
 
 @SpringBootApplication
 class MovieAggregatorServiceRtApplication {
-	@Bean
-	fun restTemplate(builder: RestTemplateBuilder): RestTemplate = builder.build()
+    @Bean
+    fun restTemplate(builder: RestTemplateBuilder): RestTemplate = builder.build()
 
-	@Bean
-	fun defaultCbCustomizer(): Customizer<Resilience4JCircuitBreakerFactory>? {
-		return Customizer { factory: Resilience4JCircuitBreakerFactory ->
-			factory.configureDefault { id: String ->
-				Resilience4JConfigBuilder(id)
-					.timeLimiterConfig(
-						TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(3)).build()
-					)
-					.circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
-					.build()
-			}
-		}
-	}
+    @Bean
+    fun defaultCbCustomizer(): Customizer<Resilience4JCircuitBreakerFactory>? {
+        return Customizer { factory: Resilience4JCircuitBreakerFactory ->
+            factory.configureDefault { id: String ->
+                Resilience4JConfigBuilder(id)
+                    .timeLimiterConfig(
+                        TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(3)).build()
+                    )
+                    .circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
+                    .build()
+            }
+        }
+    }
 }
 
 fun main(args: Array<String>) {
-	runApplication<MovieAggregatorServiceRtApplication>(*args)
+    runApplication<MovieAggregatorServiceRtApplication>(*args)
 }
