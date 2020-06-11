@@ -19,7 +19,7 @@ class MovieAwardService(
     fun findAwardsForMovie(movieId: Int): List<MovieAward> {
         return cbFactory.create("movie-award-service-cb").run(
             { getRemoteAwards(movieId) },
-            { _ -> emptyList() }
+            { emptyList() }
         )
     }
 

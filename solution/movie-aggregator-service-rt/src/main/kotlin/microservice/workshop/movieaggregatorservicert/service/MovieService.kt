@@ -18,7 +18,7 @@ class MovieService(
     fun findById(id: Int): Movie? {
         return cbFactory.create("movie-service-cb").run(
             { getRemoteMovie(id) },
-            { _ -> null }
+            { null }
         )
     }
 

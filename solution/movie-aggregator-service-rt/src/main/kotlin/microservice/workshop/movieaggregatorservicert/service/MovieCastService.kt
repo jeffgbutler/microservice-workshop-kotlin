@@ -19,7 +19,7 @@ class MovieCastService(
     fun findCastMembers(movieId: Int): List<CastMember> {
         return cbFactory.create("movie-cast-service-cb").run(
             { getRemoteCastMembers(movieId) },
-            { _ -> emptyList() }
+            { emptyList() }
         )
     }
 
