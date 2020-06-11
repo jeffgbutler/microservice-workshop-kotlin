@@ -19,24 +19,23 @@ class MovieCastService(
     fun findCastMembers(movieId: Int): List<CastMember> {
         return cbFactory.create("movie-cast-service-cb").run(
             { getRemoteCastMembers(movieId) },
-            this::defaultCastMembers
+            { _ -> emptyList() }
         )
     }
 
     private fun getRemoteCastMembers(movieId: Int): List<CastMember> {
         val url = discoveryClient.getInstances("movie-cast-service")
-                .firstOrNull()?.uri?.toString()
-                ?: throw IllegalStateException("movie-cast-service not available")
+            .firstOrNull()?.uri?.toString()
+            ?: throw IllegalStateException("movie-cast-service not available")
 
         val uri = UriComponentsBuilder.fromHttpUrl(url)
-                .pathSegment("cast")
-                .pathSegment("search")
-                .queryParam("movieId", movieId)
-                .toUriString()
+            .pathSegment("cast")
+            .pathSegment("search")
+            .queryParam("movieId", movieId)
+            .toUriString()
 
-        val ent = template.exchange(uri, HttpMethod.GET, null, object : ParameterizedTypeReference<List<CastMember>>() {})
+        val ent =
+            template.exchange(uri, HttpMethod.GET, null, object : ParameterizedTypeReference<List<CastMember>>() {})
         return ent.body ?: emptyList()
     }
-
-    private fun defaultCastMembers(t: Throwable) = emptyList<CastMember>()
 }

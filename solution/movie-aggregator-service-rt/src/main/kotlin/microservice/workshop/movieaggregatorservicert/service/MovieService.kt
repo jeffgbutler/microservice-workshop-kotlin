@@ -18,19 +18,19 @@ class MovieService(
     fun findById(id: Int): Movie? {
         return cbFactory.create("movie-service-cb").run(
             { getRemoteMovie(id) },
-            this::unknownMovie
+            { _ -> null }
         )
     }
 
     private fun getRemoteMovie(id: Int): Movie? {
         val url = discoveryClient.getInstances("movie-service")
-                .firstOrNull()?.uri?.toString()
-                ?: throw IllegalStateException("movie-service not available")
+            .firstOrNull()?.uri?.toString()
+            ?: throw IllegalStateException("movie-service not available")
 
         val uri = UriComponentsBuilder.fromHttpUrl(url)
-                .pathSegment("movie")
-                .pathSegment(id.toString())
-                .toUriString()
+            .pathSegment("movie")
+            .pathSegment(id.toString())
+            .toUriString()
 
         return try {
             template.getForObject(uri, Movie::class.java)
@@ -38,6 +38,4 @@ class MovieService(
             null
         }
     }
-
-    private fun unknownMovie(t: Throwable): Movie? = null
 }

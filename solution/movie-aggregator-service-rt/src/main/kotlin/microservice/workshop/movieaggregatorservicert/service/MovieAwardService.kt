@@ -19,24 +19,23 @@ class MovieAwardService(
     fun findAwardsForMovie(movieId: Int): List<MovieAward> {
         return cbFactory.create("movie-award-service-cb").run(
             { getRemoteAwards(movieId) },
-            this::defaultAwards
+            { _ -> emptyList() }
         )
     }
 
     private fun getRemoteAwards(movieId: Int): List<MovieAward> {
         val url = discoveryClient.getInstances("movie-award-service")
-                .firstOrNull()?.uri?.toString()
-                ?: throw IllegalStateException("movie-award-service not available")
+            .firstOrNull()?.uri?.toString()
+            ?: throw IllegalStateException("movie-award-service not available")
 
         val uri = UriComponentsBuilder.fromHttpUrl(url)
-                .pathSegment("award")
-                .pathSegment("search")
-                .queryParam("movieId", movieId)
-                .toUriString()
+            .pathSegment("award")
+            .pathSegment("search")
+            .queryParam("movieId", movieId)
+            .toUriString()
 
-        val ent = template.exchange(uri, HttpMethod.GET, null, object : ParameterizedTypeReference<List<MovieAward>>() {})
+        val ent =
+            template.exchange(uri, HttpMethod.GET, null, object : ParameterizedTypeReference<List<MovieAward>>() {})
         return ent.body ?: emptyList()
     }
-
-    private fun defaultAwards(t: Throwable) = emptyList<MovieAward>()
 }
