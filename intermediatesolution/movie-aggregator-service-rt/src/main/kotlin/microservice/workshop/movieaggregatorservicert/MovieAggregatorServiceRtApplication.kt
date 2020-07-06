@@ -4,11 +4,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.web.client.RestTemplate
 
 @SpringBootApplication
 class MovieAggregatorServiceRtApplication {
 	@Bean
+	@Profile("!test")
 	fun restTemplate(builder: RestTemplateBuilder): RestTemplate = builder.build()
 }
 

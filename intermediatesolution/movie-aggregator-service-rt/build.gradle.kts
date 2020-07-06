@@ -27,6 +27,8 @@ dependencies {
 	implementation("io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.apache.httpcomponents:httpcore")
+	implementation("org.apache.httpcomponents:httpclient")
 
 	implementation("io.springfox:springfox-swagger2:2.9.2")
 	implementation("io.springfox:springfox-swagger-ui:2.9.2")
@@ -35,6 +37,7 @@ dependencies {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
 	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("io.specto:hoverfly-java-junit5:0.13.0")
 }
 
 dependencyManagement {
