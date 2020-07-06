@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder
 class MovieAwardService(private val template: RestTemplate) {
 
     fun findAwardsForMovie(movieId: Int): List<MovieAward> {
-        val uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8083")
+        val uri = UriComponentsBuilder.fromHttpUrl("https://movie-award-service.apps.pas.jgbpcf.net")
                 .pathSegment("award")
                 .pathSegment("search")
                 .queryParam("movieId", movieId)

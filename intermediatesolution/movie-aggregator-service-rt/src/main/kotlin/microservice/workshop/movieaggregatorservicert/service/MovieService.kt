@@ -9,7 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder
 @Service
 class MovieService(private val template: RestTemplate) {
     fun findById(id: Int): Movie? {
-        val uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8081")
+        val uri = UriComponentsBuilder.fromHttpUrl("https://movie-service.apps.pas.jgbpcf.net")
                 .pathSegment("movie")
                 .pathSegment(id.toString())
                 .toUriString()

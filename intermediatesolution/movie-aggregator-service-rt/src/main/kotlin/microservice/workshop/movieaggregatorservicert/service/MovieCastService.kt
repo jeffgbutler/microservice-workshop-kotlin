@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder
 class MovieCastService(private val template: RestTemplate) {
 
     fun findCastMembers(movieId: Int): List<CastMember> {
-        val uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8082")
+        val uri = UriComponentsBuilder.fromHttpUrl("https://movie-cast-service.apps.pas.jgbpcf.net")
                 .pathSegment("cast")
                 .pathSegment("search")
                 .queryParam("movieId", movieId)
