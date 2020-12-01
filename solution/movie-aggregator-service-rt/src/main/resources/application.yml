@@ -13,7 +13,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: info,health
+        include: info,health,prometheus
 
 eureka:
   client:
